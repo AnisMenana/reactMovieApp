@@ -57,35 +57,51 @@ class MovieApp extends Component {
     this.setState({ currentMovie: filterMovie });
   };
 
-  onChangeRate = () => {
-    this.setState = {};
+  onChangeRate = event => {
+    this.setState({ rate: event.target.value });
+  };
+
+  onClickRate = () => {
+    const filterRate = this.state.movie.filter(movie => {
+      return movie.rate === this.state.rate;
+    });
+    this.setState({ currentMovie: filterRate });
   };
 
   onChangeRatex = () => {
-    this.setState = {};
+    this.setState();
   };
 
   onChangeTitle = () => {
-    this.setState = {};
+    this.setState();
   };
 
   onChangeYear = () => {
-    this.setState = {};
+    this.setState();
   };
 
   onChangeImage = () => {
-    this.setState = {};
+    this.setState();
   };
 
   onClickPlus = () => {
-    this.setState = {};
+    this.setState();
   };
   render() {
     return (
       <div>
-        <input type="text" onChange={this.onChangeMovie} />
+        <input
+          type="text"
+          onChange={this.onChangeMovie}
+          placeholder="Name Movie"
+        />
         <button onClick={this.onClickSearch}>Search</button>
-        <input type="text" onChange={this.onChangeRate} />
+        <input
+          type="text"
+          onChange={this.onChangeRate}
+          placeholder="Rate Movie"
+        />
+        <button onClick={this.onClickRate}>Search rate</button>
         <div className="listMovie">
           {this.state.currentMovie.map(e => (
             <div className="movies">
@@ -100,15 +116,16 @@ class MovieApp extends Component {
           <input type="text" placeholder="rate" onChange={this.onChangeRatex} />
           <input
             type="text"
+            placeholder="image"
+            onChange={this.onChangeImage}
+          />
+          <input
+            type="text"
             placeholder="title"
             onChange={this.onChangeTitle}
           />
           <input type="text" placeholder="year" onChange={this.onChangeYear} />
-          <input
-            type="text"
-            placeholder="image"
-            onChange={this.onChangeImage}
-          />
+
           <button onClick={this.onClickPlus}>+</button>
         </div>
       </div>
