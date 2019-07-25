@@ -43,7 +43,13 @@ class MovieApp extends Component {
         title: "Shaft",
         year: "2005"
       }
-    ]
+    ],
+    movieAdd: {
+      rate: "",
+      img: "",
+      title: "",
+      year: ""
+    }
   };
   onChangeMovie = event => {
     this.setState({ searchMovie: event.target.value });
@@ -68,24 +74,47 @@ class MovieApp extends Component {
     this.setState({ currentMovie: filterRate });
   };
 
-  onChangeRatex = () => {
-    this.setState();
+  onChangeRatex = event => {
+    const ratex = event.target.value;
+    this.setState(prevState => {
+      console.log(prevState);
+      let movieAdd = Object.assign({}, prevState.movieAdd); // creating copy of state variable jasper
+      movieAdd.rate = ratex; // update the name property, assign a new value
+      return { movieAdd }; // return new object jasper object
+    });
   };
 
-  onChangeTitle = () => {
-    this.setState();
+  onChangeTitle = event => {
+    const titlex = event.target.value;
+    this.setState(prevState => {
+      let movieAdd = Object.assign({}, prevState.movieAdd); // creating copy of state variable jasper
+      movieAdd.title = titlex; // update the name property, assign a new value
+      return { movieAdd }; // return new object jasper object
+    });
   };
 
-  onChangeYear = () => {
-    this.setState();
+  onChangeYear = event => {
+    const yearx = event.target.value;
+    this.setState(prevState => {
+      let movieAdd = Object.assign({}, prevState.movieAdd); // creating copy of state variable jasper
+      movieAdd.year = yearx; // update the name property, assign a new value
+      return { movieAdd }; // return new object jasper object
+    });
   };
 
-  onChangeImage = () => {
-    this.setState();
+  onChangeImage = event => {
+    const imgx = event.target.value;
+    this.setState(prevState => {
+      let movieAdd = Object.assign({}, prevState.movieAdd); // creating copy of state variable jasper
+      movieAdd.img = imgx; // update the name property, assign a new value
+      return { movieAdd }; // return new object jasper object
+    });
   };
 
   onClickPlus = () => {
-    this.setState();
+    this.setState({
+      currentMovie: this.state.movie.push(this.state.movieAdd)
+    });
   };
   render() {
     return (
