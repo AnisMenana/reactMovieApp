@@ -1,7 +1,11 @@
 import React, { Component } from "react";
+import Rating from "./rating";
+import Modal from "./Modal";
 
 class MovieApp extends Component {
   state = {
+    loading: false,
+    loadingRate: false,
     searchMovie: "",
     rate: 0,
     movie: [
@@ -26,19 +30,19 @@ class MovieApp extends Component {
     ],
     currentMovie: [
       {
-        rate: "5",
+        rate: 5,
         img: "https://www.movie-list.com/img/posters/big/shazam.jpg",
         title: "Shazam",
         year: "2019"
       },
       {
-        rate: "4",
+        rate: 4,
         img: "https://www.movie-list.com/img/posters/big/aquarela.jpg",
         title: "Aquarela",
         year: "2016"
       },
       {
-        rate: "3",
+        rate: 3,
         img: "https://www.movie-list.com/img/posters/big/shaft.jpg",
         title: "Shaft",
         year: "2005"
@@ -60,7 +64,14 @@ class MovieApp extends Component {
       console.log(movie.title);
       return movie.title === this.state.searchMovie;
     });
-    this.setState({ currentMovie: filterMovie });
+    this.setState({ currentMovie: [], loading: true });
+
+    setTimeout(() => {
+      this.setState({ currentMovie: filterMovie });
+    }, 2000);
+    setTimeout(() => {
+      this.setState({ loading: false });
+    }, 2000);
   };
 
   onChangeRate = event => {
@@ -71,7 +82,13 @@ class MovieApp extends Component {
     const filterRate = this.state.movie.filter(movie => {
       return movie.rate === this.state.rate;
     });
-    this.setState({ currentMovie: filterRate });
+    this.setState({ currentMovie: [], loadingRate: true });
+    setTimeout(() => {
+      this.setState({ currentMovie: filterRate });
+    }, 2000);
+    setTimeout(() => {
+      this.setState({ loadingRate: false });
+    }, 2000);
   };
 
   onChangeRatex = event => {
@@ -113,10 +130,12 @@ class MovieApp extends Component {
 
   onClickPlus = () => {
     this.setState({
-      currentMovie: this.state.movie.push(this.state.movieAdd)
+      currentMovie: this.state.movie.concat(this.state.movieAdd)
     });
   };
   render() {
+    const { loading } = this.state;
+    const { loadingRate } = this.state;
     return (
       <div>
         <input
@@ -124,17 +143,29 @@ class MovieApp extends Component {
           onChange={this.onChangeMovie}
           placeholder="Name Movie"
         />
-        <button onClick={this.onClickSearch}>Search</button>
+
+        <button onClick={this.onClickSearch} disabled={loading}>
+          {loading && <i class="fas fa-spinner fa-spin" />}
+          {loading && <span>Loading...</span>}
+          {!loading && <span>Search</span>}
+        </button>
         <input
           type="text"
           onChange={this.onChangeRate}
           placeholder="Rate Movie"
         />
-        <button onClick={this.onClickRate}>Search rate</button>
+        <button onClick={this.onClickRate} disabled={loadingRate}>
+          {loadingRate && <i class="fas fa-spinner fa-spin" />}
+          {loadingRate && <span>Loading...</span>}
+          {!loadingRate && <span>Search rate</span>}
+        </button>
+
         <div className="listMovie">
           {this.state.currentMovie.map(e => (
             <div className="movies">
-              <div>{e.rate}</div>
+              <div>
+                <Rating count={e.rate} />
+              </div>
               <img src={e.img} />
               <div>{e.title}</div>
               <div>{e.year}</div>
@@ -142,20 +173,13 @@ class MovieApp extends Component {
           ))}
         </div>
         <div>
-          <input type="text" placeholder="rate" onChange={this.onChangeRatex} />
-          <input
-            type="text"
-            placeholder="image"
-            onChange={this.onChangeImage}
+          <Modal
+            sendmovie={newmovie => {
+              this.setState({
+                currentMovie: this.state.movie.concat([newmovie])
+              });
+            }}
           />
-          <input
-            type="text"
-            placeholder="title"
-            onChange={this.onChangeTitle}
-          />
-          <input type="text" placeholder="year" onChange={this.onChangeYear} />
-
-          <button onClick={this.onClickPlus}>+</button>
         </div>
       </div>
     );
